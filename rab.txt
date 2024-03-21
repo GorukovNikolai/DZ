@@ -1,0 +1,5 @@
+4
+Gorukov Nikolai 18 Olimp 9 5 7 
+Kuritsyn Nikita 18 Olimp 10 2 4
+Mukhin Nikita 18 Olimp 9 7 2
+Malyaev Alexey 18 Olimp 9 5 3
