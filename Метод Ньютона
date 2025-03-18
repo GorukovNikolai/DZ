@@ -1,0 +1,61 @@
+#include <cmath>
+#include <iostream>
+
+using namespace std;
+
+// Функция для вычисления значения целевой функции
+// Возвращает результат расчета функции
+// Функция (x^4)/4 - 2*x^2
+double function(double x) {
+    return (pow(x, 4) / 4) - 2 * pow(x, 2);
+}
+
+// Производная функции
+double derivative(double x) {
+    return pow(x, 3) - 4 * x;
+}
+
+// Вторая производная функции
+double second_derivative(double x) {
+    return 3 * pow(x, 2) - 4;
+}
+
+// Метод Ньютона для нахождения минимума функции
+double newton_method(double x0, double e) {
+    double x = x0;
+    int iter = 0; // Обнуляем счетчик итераций
+
+    while (abs(derivative(x)) > e) { // Проверка критерия остановки
+        iter++;
+        if (function(x) == -1) break;
+        cout << "Итерайция |" << iter
+            << "| x = " << x << " | f'(x) = " << derivative(x) << " | f''(x) = " << second_derivative(x) << " | f(x) = " << function(x) << endl;
+
+        if (fabs(second_derivative(x)) < 1e-9) {
+            cout << "Вторая производная слишком мала для данного метода";
+            return -1;
+        }
+
+        x = x - (derivative(x) / second_derivative(x)); // Расчет следующего приближения
+
+    }
+
+    cout << "\n----------------\n Число итераций: " << iter << endl;
+
+    return x;
+}
+
+int main() {
+    setlocale(LC_ALL, "RU"); // Устанавливаем русскую локализацию
+    double e; // Точность (в нашей задаче: 0.06)
+    // Ввод точности с клавиатуры
+        cout << "Введите нужную точность: ";
+        cin >> e;
+        double x0;
+        cout << "Введите начальное приближение: ";
+        cin >> x0;
+        cout << endl;
+        double min_x = newton_method(x0, e);
+        cout << "x = " << min_x << " f(x) = " << function(min_x) << endl;
+    }
+
