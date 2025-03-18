@@ -1,0 +1,109 @@
+#include <cmath>
+#include <iostream>
+
+using namespace std;
+
+int max_iter = 6;
+
+// Функция для вычисления значения целевой функции
+// Возвращает результат расчета функции
+// Функция (x^4)/4 - 2*x^2
+double function(double x) {
+    return (pow(x, 4) / 4) - 2 * pow(x, 2);
+}
+
+
+// Метод поразрядного поиска минимума
+double bitwiseSearch(double a, double b, double e) {
+    double d = (b - a) / 4; //Дельта
+    double x0 = a;//Начальная / левая граница
+    double x1, f0, f1;
+    int iter = 0;
+
+    f0 = function(x0);
+
+    while (d > e) {
+
+        cout << endl << "Поиск вправо" << endl;
+
+        while (true) { //Цикл двигается вправо
+            x1 = x0 + d;
+
+            f1 = function(x1);
+
+            cout << "Итерация |" << iter << "| " << " | шаг " << d << " | " << "x " << x1 << " | f(x) " << f1 << endl;
+            iter++;
+            if (iter == max_iter) return x0;
+            if (f0 > f1) {
+                x0 = x1;
+                f0 = f1;
+
+                if (x0 < a)
+                    x0 = a;
+                else if (x0 >= b)
+                    x0 = b;
+
+            }
+            else {
+                break;
+            }
+
+
+        }
+
+        d /= 4; //Уменьшение шага
+
+        x0 = x1;
+
+        f0 = function(x0);
+
+        cout << endl << "Поиск влево" << endl;
+
+        while (true) //Цикл движется влево
+        {
+            x1 = x0 - d;
+            f1 = function(x1);
+
+            cout << "Итерация |" << iter << " | шаг " << d << " | " << "x " << x1 << " | f(x) " << f1 << endl;
+            iter++;
+            if (iter == max_iter) return x0;
+            if (f0 > f1) {
+                b = x0;
+                x0 = x1;
+                f0 = f1;
+
+                if (x0 < a)
+                    x0 = a;
+                else if (x0 > b)
+                    x0 = b;
+            }
+            else {
+                break;
+            }
+
+
+        }
+    }
+    return x0;
+    cout << "Количество итераций: " << iter << endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "RU"); // Устанавливаем русскую локализацию
+    double a, b; // Интервал поиска минимума (в случае нашей задачи: [1; 12])
+    double e; // Точность (в нашей задаче: 0.06)
+    // Ввод границ и точности с клавиатуры
+    cout << "Введите левую границу: ";
+    cin >> a;
+    cout << "Введите правую границу: ";
+    cin >> b;
+    cout << "Введите точность: ";
+    cin >> e;
+    cout << endl;
+    double min_x;
+    min_x = bitwiseSearch(a, b, e);
+    cout << "x = " << min_x << " f(x) = " << function(min_x) << endl;
+    system("pause");
+    system("cls");
+    main();
+}
